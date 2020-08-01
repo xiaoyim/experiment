@@ -1,0 +1,57 @@
+server:
+  port: 8012
+
+spring:
+  redis:
+    database: 0
+    host: 192.168.100.101
+    password: redis123456
+    port: 6379
+    timeout: 5000
+  rabbitmq:
+    host: 192.168.100.111
+    port: 5672
+    username: guest
+    password: guest
+    publisher-confirms: true
+    listener: 
+      simple: 
+        acknowledge-mode: MANUAL
+  datasource:
+    url: jdbc:mysql://192.168.100.240:3306/mall_miaosha?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+cas:
+  server-login-url: http://cas.example.org:8080/cas/login
+  server-url-prefix: http://cas.example.org:8080/cas
+  client-host-url: http://127.0.0.1:8012
+  validation-type: cas
+  authentication-url-patterns:
+  - /order/*
+  
+dubbo: 
+  service-version: 1.0
+  application: 
+    name: mall-miaosha
+    organization: dongnao
+    owner: java
+  registry:
+    address: 192.168.100.100:2181
+    protocol: zookeeper
+
+xxl-job:
+  adminAddresses: http://192.168.100.101:8082/xxl-job-admin
+  appName: xxl-job-executor-miaosha-loaditem
+  ip: 192.168.100.49
+  port: 28012
+  accessToken: 
+  logPath: /data/applogs/xxl-job/jobhandler
+  logRetentionDays: -1
+  
+mall: 
+  miaosha: 
+    async_threshold: 0
+    success_redirect_url: "http://127.0.0.1:9999/#/user/orderError"
+    failed_redirect_url: "http://127.0.0.1:9999/#/user/orderWait"
